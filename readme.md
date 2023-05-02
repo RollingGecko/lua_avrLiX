@@ -1,5 +1,5 @@
 #avgLiX
-is Lua Script for Ethos, that creates a widget to calculates the average Voltage per Cell of a battery pack from a single voltage source.
+is Lua Script for Ethos, that creates a widget to calculate and show the average Voltage per Cell of a battery pack from a single voltage source.
 ![Widget](\pictures\avgLiX_WidgetScreen1.jpg)
 
 ##Functions
@@ -19,6 +19,6 @@ is Lua Script for Ethos, that creates a widget to calculates the average Voltage
 2. Copy the files in the folder *\audio* to the folder *\audio* of your sd card
 
 ##Testing
-The files *voltageSourceDummy.lua* and *volSourDummy_reg.lua* are lua-sources, that can be used to test in the simulator.
-
 Tested with device **X20S** and Ethos **1.4.8**
+
+The files *voltageSourceDummy.lua* and *volSourDummy_reg.lua* are lua-sources, that can be used to test in the simulator.
