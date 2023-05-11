@@ -14,9 +14,16 @@ local function sourceInit(source)
 end
 
 local function sourceWakeup(source)
-  local throttleValue = system.getSource({name="K3"}):value()
-  local percent = throttleValue/1000
-  local value = 25.2 * percent
+  local throttleValue = system.getSource({name="K3"}):value() + 1024
+
+  local cellCount = 12
+  local minValue = 3.3 * cellCount
+  local maxValue = 4.2 * cellCount
+  local step = (maxValue - minValue) / 100
+
+  local percent = throttleValue/2048 *100
+
+  local value = minValue + (percent * step) 
   source:value(value)
 
 end
