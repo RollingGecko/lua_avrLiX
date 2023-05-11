@@ -82,6 +82,7 @@ end
 local function wakeup(widget)
     local switch = widget.calloutSwitch
     local numCell = widget.numberCells
+    local secondsToRepeatAlarm = 6
 
     --First init of values (to prevent nil-Errors)
     if (widget.sourceValue) == nil then
@@ -98,6 +99,10 @@ local function wakeup(widget)
         widget.timeCriticalAlarmReadout = os.time()
     end
 
+    if widget.timeAlarmRepeat == nil then
+        widget.timeAlarmRepeat = os.time()
+    end
+
     if widget.repeatReading == nil then
         widget.repeatReading = false
     end
@@ -106,6 +111,9 @@ local function wakeup(widget)
     end
     if widget.criticalAlarmCallout ==nil then
         widget.criticalAlarmCallout = false
+    end
+    if widget.lastTimeAlarmCheck == nil then
+        widget.lastTimeAlarmCheck = os.time()
     end
 
     --trigger Refresh screen and value if coltageSource changes
@@ -135,6 +143,12 @@ else
     widget.timeReadout=os.time()
 end
 
+-- Repeat alarm 
+if (os.time() - widget.lastTimeAlarmCheck) >= secondsToRepeatAlarm then
+    widget.lowAlarmCallout = false;
+    widget.criticalAlarmCallout = false;
+end 
+
 --AlarmVoltage Readout
 if (widget.avgCellVoltage <= widget.lowAlarmVoltage 
     and widget.avgCellVoltage > widget.criticalAlarmVoltage
@@ -143,7 +157,9 @@ if (widget.avgCellVoltage <= widget.lowAlarmVoltage
         --Play alarm only when avg Voltage only x seconds under thresshold
         if (os.time() - widget.timeLowAlarmReadout) >= widget.waitSecondsLowAlarm then
             system.playFile("vollow.wav")
+            system.playHaptic("- . -")
             widget.lowAlarmCallout = true
+            widget.lastTimeAlarmCheck = os.time()
         end
 elseif widget.avgCellVoltage > widget.lowAlarmVoltage then
     widget.lowAlarmCallout = false
@@ -154,7 +170,9 @@ if widget.avgCellVoltage <= widget.criticalAlarmVoltage and widget.criticalAlarm
     --Play alarm only when avg Voltage only x seconds under thresshold
     if (os.time() - widget.timeCriticalAlarmReadout) >= widget.waitSecondsCriticalAlarm then
         system.playFile("volCrit.wav")
+        system.playHaptic("- . -")
         widget.criticalAlarmCallout = true
+        widget.lastTimeAlarmCheck = os.time()
     end
 elseif widget.avgCellVoltage > widget.criticalAlarmVoltage then
     widget.criticalAlarmCallout = false
@@ -204,7 +222,6 @@ local function configure(widget)
     local field = form.addNumberField(line, r[2],0, 20, function() return widget.waitSecondsCriticalAlarm end, function(value) widget.waitSecondsCriticalAlarm = value end)
     field:suffix(" s")
     field:default(1)
-
 
 end --function
 
