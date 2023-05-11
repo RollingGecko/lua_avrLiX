@@ -7,7 +7,7 @@ is Lua Script for Ethos, that creates a widget to calculate and show the average
 * Shows the voltage of the battery pack and the average cell voltage.
 * Shows a bargraph for the average voltage between definable minimum and maximum voltage.
 * Displays the average voltage by a switch and definable repeat.
-* Alerts for low and critical voltage with a callout and a definable delay (to prevent alerts during short bursts with high current).
+* Alerts for low and critical voltage with a callout and haptic with a definable delay (to prevent alerts during short bursts with high current).
 * Bargraph changes color (green, yellow, red) according to low and critical voltage thresholds.
 
 ## Configuration
